@@ -4,37 +4,40 @@ import './index.css';
 
 
 
-
+let func;
 const app = {
   title: 'Indecision App',
   subtitle: 'Put your life in the hands of a computer',
-  options: ['One', 'Two']
+  options: []
 };
 
 const onFormSubmit = (e) => {
   e.preventDefault();
   let vrednost = e.target.elements.option.value; 
-  console.log(vrednost);
+  
   if (vrednost) {
     app.options.push(vrednost);
     e.target.elements.option.value='';
-    console.log(app.options);
+    
   }
+  func=app.options.map(element => {
+ return <li key={app.options.indexOf(element)}>{element}</li>
+});
   rend();
 }
 
 
-const App = () => {
- const camels = app.options;
- const caravan = camels.map((n) =>  <li>{n}</li>);
- //arej list ajtema
- console.log(caravan);
- }
-App();
+
 const removeFunction = () => {
   console.log("klik na remove");
   app.options=[];
+  func=[];
+  rend();
 }
+
+
+
+
 
 function rend(){
   const template = (
@@ -42,12 +45,12 @@ function rend(){
     <h1>{app.title}</h1>
     {app.subtitle && <p>{app.subtitle}</p>}
     <p>{app.options.length > 0 ? 'Here are your options' : 'No options'}</p>
-     <p>{app.options.length}</p>
+     <p>Duzina areja je : {app.options.length}</p>
+     
     <ol>
-     
-     
-      <li>{app.options[0]}</li>
-      <li>{app.options[1]}</li>
+     {func}
+      
+      
      
      
       
