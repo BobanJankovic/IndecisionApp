@@ -13,6 +13,7 @@ const app = {
 
 const onFormSubmit = (e) => {
   e.preventDefault();
+ 
   let vrednost = e.target.elements.option.value; 
   
   if (vrednost) {
@@ -20,9 +21,14 @@ const onFormSubmit = (e) => {
     e.target.elements.option.value='';
     
   }
+  let index=0;
+  
+
   func=app.options.map(element => {
- return <li key={app.options.indexOf(element)}>{element}</li>
+    //mozda najboje resenje za key
+ return <li key={index++}>{element}</li>
 });
+
   rend();
 }
 
@@ -35,8 +41,35 @@ const removeFunction = () => {
   rend();
 }
 
+const makeDecision = () => {
+  let option= Math.floor(Math.random()*app.options.length);
+  alert(app.options[option]);
+}
+let broj=0;
+const toogleVisibility = () => {
+    broj++;
+    if (broj%2!==0) {
+      var kontejner=document.getElementById('app');
+      var node = document.createElement("P");
 
+      node.setAttribute("id", "paragraf");
 
+      var textnode = document.createTextNode("Boban je pravi web developer");
+      node.appendChild(textnode);
+      kontejner.appendChild(node);
+    } else {
+        var parent = document.getElementById('app');
+        var child = document.getElementById("paragraf");
+        parent.removeChild(child);
+    };
+    
+    
+    console.log(broj);
+    
+  rend();
+  }
+
+ 
 
 
 function rend(){
@@ -56,6 +89,8 @@ function rend(){
       
     </ol>
     <button onClick={removeFunction}>Remove All</button>
+    <button id={"dugme"} onClick={toogleVisibility} >View sth</button>
+    <button disabled = {app.options.length === 0} onClick={makeDecision}>What should i do?</button>
     <form onSubmit={onFormSubmit}>
     <input type="text" name="option" ></input>
     <button >Add option</button>
