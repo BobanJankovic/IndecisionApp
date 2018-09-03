@@ -1,3 +1,89 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+class Person {
+  constructor (name="Anonymous",age=0) {
+    this.name=name;
+    this.age=age;
+   
+    
+  }
+
+  sayHi(){
+    return "Hello i'm " + this.name + " i have " +this.age;
+  }
+  
+}
+
+
+class Traveler extends Person {
+  constructor (name,age,homeLocation,grad) {
+    super(name,age);
+    this.homeLocation=homeLocation;
+    this.grad=grad;
+    
+    
+  }
+
+  hasHomeLocation(){
+   return this.homeLocation= !!this.homeLocation;
+  }
+  sayHi(){
+    let description=super.sayHi();
+    description += " im traveler svetski putnik iz " + this.grad ;
+    console.log(description);
+    return description;
+  }
+  
+}
+
+
+
+
+var boki = new Person("Boban",26)
+console.log(boki.name);
+boki.sayHi();
+
+
+var putnik = new Traveler("Boban",101,"Nju jork", "Filadelfija");
+console.log(putnik);
+putnik.sayHi();
+
+
+
+var kris = new Person("Aca",32)
+kris.sayHi();
+var anonimus = new Person()
+anonimus.sayHi();
+
+
+function hello() {
+    console.log("Hi" + ${this.name});
+  }
+
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
