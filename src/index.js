@@ -1,9 +1,48 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+
+class Header extends React.Component {
+ render() {
+   return (
+    <div>
+      <h1>Zdravo ja sam Boban</h1>
+    </div>
+   );
+ }
+
+
+}
+class Button extends React.Component {
+ render() {
+   return (
+    <button>
+      Zdravo ja sam Boban
+    </button>
+   );
+ }
+
+
+}
+
+const jsx= (
+<div>
+  <Header />
+  <Button />
+  <Header />
+  <Button />
+  <Header />
+  <Button />
+
+</div>
+
+);
 
 
 
 
 
-
+ReactDOM.render(jsx, document.getElementById('app'));
 
 
 
