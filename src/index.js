@@ -2,47 +2,173 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+
+class IndecisionApp extends React.Component {
+ render() {
+   const title = "Indecision" ;
+   const subtitle = "Put your life in the hands of computer";
+   const options = ['thing one', 'thing two', 'thing three'];
+   return (
+     <div>
+      <Header title={title} subtitle={subtitle} />
+      <Action />
+      <Options arr={options} duzina={options.length} />
+      <AddOption arr={options}/>
+      
+    </div>
+   );
+ }
+}
+
+
+
 class Header extends React.Component {
  render() {
    return (
     <div>
-      <h1>Zdravo ja sam Boban</h1>
+      <h1>{this.props.title}</h1>
+      <h3>{this.props.subtitle}</h3>
     </div>
    );
  }
 
 
 }
-class Button extends React.Component {
+class Action extends React.Component {
+  handlePick(){
+   alert("HandlePicking")
+  };
  render() {
    return (
-    <button>
-      Zdravo ja sam Boban
-    </button>
+     <div>
+      <h2>
+        Zdravo ja sam Action
+      </h2>
+      <button onClick={this.handlePick}>Pick Option</button>
+    </div>  
    );
  }
 
 
 }
 
-const jsx= (
-<div>
-  <Header />
-  <Button />
-  <Header />
-  <Button />
-  <Header />
-  <Button />
-
-</div>
-
-);
 
 
+class Options extends React.Component {
+  //ovoradimo da ne bi morali da stalno kada pozivamo event hendler na onClick 
+  //da pisemo .bind(this)
+  constructor(props){
+    super(props);
+    this.handleRemoveAll = this.handleRemoveAll.bind(this);
+  };
+  //ovde se this odnosi na instancu objekta tako je u es6
+  //handleRemoveAll=()=>{
+   //alert(this.props.arr);
+  //}
+   //ovde se this odnosi na global scope i ne vidi se kaze da je this undefined
+   //i onda moramo da koristimo bind(this) da bi mu set context to instance object
+   handleRemoveAll(){
+   alert(this.props.arr);
+   }
+  
+  
+ render() {
+   
+    console.log(this.props);
+    let index=0;
+     
+   let func=this.props.arr.map(element => {
+      //mozda najboje resenje za key
+      return <li key={index++}>{element}</li>
+    });
+console.log(func);
+
+ 
+   return (
+     <div>
+    <button onClick={this.handleRemoveAll}>
+      Remove all
+    </button>
+     
+    <Option arr2={this.props.arr} duzina2={this.props.duzina} func1={func}/>
+    
+    </div>
+   );
+ }
+
+
+}
+
+
+class Option extends React.Component {
+ render() {
+   console.log(this.props);
+
+  
+
+   return (
+    <div>
+      <h2>
+        Ovo je arej:
+        {this.props.arr2}
+        
+      </h2>
+      <h4>
+        Ovo je duzina Areja> {this.props.duzina2}
+      </h4>
+      <p>Option :{this.props.func1}</p>
+    </div>
+
+   );
+ }
+
+
+}
 
 
 
-ReactDOM.render(jsx, document.getElementById('app'));
+// 1. Setup the form with text input and submit button
+// 2. Wire up onSubmit
+// 3. handleAddOption -> fetch the value typed -> if value, then alert
+
+class AddOption extends React.Component {
+ render() {
+
+  const onFormSubmit = (e) => {
+    e.preventDefault();
+  
+    let vrednost = e.target.elements.option.value; 
+    
+    if (vrednost) {
+      this.props.arr.push(vrednost);
+      alert(this.props.arr);
+      e.target.elements.option.value='';
+      
+    }
+  }  
+
+   return (
+    <div>
+      <h2>
+        Zdravo ja sam AddOption
+      </h2>
+      <form onSubmit={onFormSubmit}>
+      <input type="text" name="option" ></input>
+      <button >Add option</button>
+      </form>
+    </div>
+   );
+ }
+
+
+}
+
+
+
+
+
+
+ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
 
 
 
