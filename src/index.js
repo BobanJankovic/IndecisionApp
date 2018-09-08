@@ -9,9 +9,12 @@ class IndecisionApp extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      options: ['thing one', 'thing two', 'thing three']
+      options: []
+      //options: ['thing one', 'thing two', 'thing three']
     }
     this.handleAdd=this.handleAdd.bind(this);
+    this.handleDeleteOption=this.handleDeleteOption.bind(this);
+    
   }
 
   handleAdd(e){
@@ -26,18 +29,26 @@ class IndecisionApp extends React.Component {
    e.target.elements.option.value='';
     };
   };
+   
+  
+  handleDeleteOption(){
+    this.setState({options:[]});
+  };
 
  render() {
    const title = "Indecision" ;
    const subtitle = "Put your life in the hands of computer";
-   
+  
    return (
      <div>
       <Header title={title} subtitle={subtitle} />
-      <Action />
+      <Action 
+      handlePickOption={this.state.options.length>0}
+      handleDeleteOption={this.handleDeleteOption}
+      />
 
 
-      <Options options={this.state.options} length={this.state.options.length} />
+      <Options options={this.state.options}  length={this.state.options.length} />
       <AddOption handleAdd={this.handleAdd}/>
       
     </div>
@@ -60,16 +71,24 @@ class Header extends React.Component {
 
 }
 class Action extends React.Component {
+  constructor(props){
+    super(props);
+  }
+ 
   handlePick(){
    alert("HandlePicking")
   };
  render() {
+    console.log(this.props);
    return (
      <div>
       <h2>
         Izaberite opciju randoomly
       </h2>
-      <button onClick={this.handlePick}>Pick Option</button>
+      <button onClick={this.handlePick} type="button" disabled={!this.props.handlePickOption}>Pick Option</button>
+      
+      <button onClick={this.props.handleDeleteOption}>Delete All!</button>
+      
     </div>  
    );
  }
@@ -84,6 +103,7 @@ class Options extends React.Component {
   constructor(props){
     super(props);
     this.handleRemoveAll = this.handleRemoveAll.bind(this);
+
     //this.func=this.func.bind(this);
   };
   
@@ -95,7 +115,8 @@ class Options extends React.Component {
  render() {
    
    let index=0;
-     
+    //ovo je arej u varoijabli let func i zbog toga kada se daje optionsu 
+    //ne mora bind i this da se kuca samo ovako kako sam uradio 
    let func=this.props.options.map(element => {
     //mozda najboje resenje za key
     return <li key={index++}>{element}</li>
@@ -107,7 +128,10 @@ class Options extends React.Component {
       Remove all
     </button>
      
-    <Option arr={this.props.options} duzina2={this.props.options.length} func1={func}/>
+    <Option 
+    arr={this.props.options} 
+    duzina2={this.props.options.length} 
+    func1={func}/>
     
     </div>
    );
@@ -119,7 +143,7 @@ class Options extends React.Component {
 
 class Option extends React.Component {
  render() {
-   console.log(this.props);
+   
 
   
 
