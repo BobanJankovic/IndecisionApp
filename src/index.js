@@ -3,6 +3,273 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 
+
+
+class IndecisionApp extends React.Component {
+  constructor(props){
+    super(props);
+    this.state={
+      options: ['thing one', 'thing two', 'thing three']
+    }
+    this.handleAdd=this.handleAdd.bind(this);
+  }
+
+  handleAdd(e){
+   e.preventDefault();
+    let vrednost = e.target.elements.option.value; 
+    if (vrednost) {
+   //this.setState({options:this.state.options.push(vrednost)})
+   //https://stackoverflow.com/questions/26253351/correct-modification-of-state-arrays-in-reactjs
+   this.setState(prevState => ({
+  options: [...prevState.options, vrednost]
+}))
+   e.target.elements.option.value='';
+    };
+  };
+
+ render() {
+   const title = "Indecision" ;
+   const subtitle = "Put your life in the hands of computer";
+   
+   return (
+     <div>
+      <Header title={title} subtitle={subtitle} />
+      <Action />
+
+
+      <Options options={this.state.options} length={this.state.options.length} />
+      <AddOption handleAdd={this.handleAdd}/>
+      
+    </div>
+   );
+ }
+}
+
+
+
+class Header extends React.Component {
+ render() {
+   return (
+    <div>
+      <h1>{this.props.title}</h1>
+      <h3>{this.props.subtitle}</h3>
+    </div>
+   );
+ }
+
+
+}
+class Action extends React.Component {
+  handlePick(){
+   alert("HandlePicking")
+  };
+ render() {
+   return (
+     <div>
+      <h2>
+        Izaberite opciju randoomly
+      </h2>
+      <button onClick={this.handlePick}>Pick Option</button>
+    </div>  
+   );
+ }
+
+
+}
+
+
+
+class Options extends React.Component {
+  
+  constructor(props){
+    super(props);
+    this.handleRemoveAll = this.handleRemoveAll.bind(this);
+    //this.func=this.func.bind(this);
+  };
+  
+   handleRemoveAll(){
+   alert(this.props.arr);
+   }
+  
+  
+ render() {
+   
+   let index=0;
+     
+   let func=this.props.options.map(element => {
+    //mozda najboje resenje za key
+    return <li key={index++}>{element}</li>
+   });
+
+   return (
+     <div>
+    <button onClick={this.handleRemoveAll}>
+      Remove all
+    </button>
+     
+    <Option arr={this.props.options} duzina2={this.props.options.length} func1={func}/>
+    
+    </div>
+   );
+ }
+
+
+}
+
+
+class Option extends React.Component {
+ render() {
+   console.log(this.props);
+
+  
+
+   return (
+    <div>
+      <h2>
+        Ovo je arej:
+        {this.props.arr}
+        
+      </h2>
+      <h4>
+        Ovo je duzina Areja> {this.props.duzina2}
+      </h4>
+      <p>Option :{this.props.func1}</p>
+    </div>
+
+   );
+ }
+
+
+}
+
+//
+
+// 1. Setup the form with text input and submit button
+// 2. Wire up onSubmit
+// 3. handleAddOption -> fetch the value typed -> if value, then alert
+
+
+class AddOption extends React.Component {
+  
+ render() {
+   
+  
+
+   return (
+    <div>
+      <h2>
+        Zdravo ja sam AddOption
+      </h2>
+      <form onSubmit={this.props.handleAdd}>
+      <input type="text" name="option" ></input>
+      <button >Add option</button>
+      </form>
+    </div>
+   );
+ }
+
+
+}
+
+
+
+ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+--------------------------------------------------
+The recommended approach in later React versions is to use an updater function 
+when modifying states to prevent race conditions:
+
+this.setState(prevState => ({
+  arrayvar: [...prevState.arrayvar, newelement]
+}))
+spread operator [...arr]
+----------------------------------------------------------
+
+const onFormSubmit = (e) => {
+    e.preventDefault();
+    let vrednost = e.target.elements.option.value; 
+    if (vrednost) {
+      this.props.arr.push(vrednost);
+      alert(this.props.arr);
+      
+      e.target.elements.option.value='';
+      
+    }
+  }  
+
+
+  -----------------------------------------------
+class Counter extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state={
+      count:0
+    }
+    this.handleMinus=this.handleMinus.bind(this);
+    this.handleAdd=this.handleAdd.bind(this);
+    this.handleRemove=this.handleRemove.bind(this);
+  }
+  handleMinus(){
+    
+   this.setState({count:this.state.count-1});
+  };
+  handleAdd(){
+   
+   this.setState((prevState)=> {
+     return {
+       count:prevState.count+2
+     }
+   })
+  };
+  handleRemove(){
+   
+   this.setState({count:0});
+  };
+ render() {
+   return (
+     <div>
+      <h2>
+        Counter: {this.state.count}
+      </h2>
+      <button onClick={this.handleAdd}>+1</button>
+      <button onClick={this.handleMinus}>-1</button>
+      <button onClick={this.handleRemove}>Remove All</button>
+    </div>  
+   );
+ }
+
+
+}
+
+
+
+const appRoot = document.getElementById('app');
+
+ReactDOM.render(<Counter />, appRoot);
+
+
+
+-------------------------------------------------------------------
+
+
+
 class IndecisionApp extends React.Component {
  render() {
    const title = "Indecision" ;
@@ -165,29 +432,12 @@ class AddOption extends React.Component {
 
 
 
-
-
-
 ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
 
 
+------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
 class Person {
   constructor (name="Anonymous",age=0) {
     this.name=name;
@@ -201,8 +451,6 @@ class Person {
   }
   
 }
-
-
 class Traveler extends Person {
   constructor (name,age,homeLocation,grad) {
     super(name,age);
@@ -224,9 +472,6 @@ class Traveler extends Person {
   
 }
 
-
-
-
 var boki = new Person("Boban",26)
 console.log(boki.name);
 boki.sayHi();
@@ -235,8 +480,6 @@ boki.sayHi();
 var putnik = new Traveler("Boban",101,"Nju jork", "Filadelfija");
 console.log(putnik);
 putnik.sayHi();
-
-
 
 var kris = new Person("Aca",32)
 kris.sayHi();
@@ -248,6 +491,7 @@ function hello() {
     console.log("Hi" + ${this.name});
   }
 
+-----------------------------------------------------------------------------
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -306,7 +550,53 @@ const toogleVisibility = () => {
   }
 
  
+/////////////////////////////////////////////////////////////////////////////
+// VisibilityToggle - render, constructor, handleToggleVisibility
+//visibility-> false
+//togle visibility with this.state
 
+class VisibilityToggle extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state={
+      visibility:false
+    }
+    this.handleToggleVisibility=this.handleToggleVisibility.bind(this);
+    
+  }
+  handleToggleVisibility(){
+    
+   this.setState(()=> {
+     return {
+       visibility:!this.state.visibility
+     }
+   })
+
+   }
+  
+  
+ render() {
+   return (
+     <div>
+     {this.state.visibility && <h2>Show something</h2>}
+    
+      <button onClick={this.handleToggleVisibility}>Show something</button>
+      
+    </div>  
+   );
+ }
+
+
+}
+
+
+
+const appRoot = document.getElementById('app');
+
+ReactDOM.render(<VisibilityToggle />, appRoot);
+
+/////////////////////////////////////////////////////////////////////////////
 
 function rend(){
   const template = (
@@ -358,6 +648,7 @@ rend();
 
 
 /*
+--------------------------------------------------------
 Second way of doing rendering pure JS
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -432,9 +723,6 @@ const toogleVisibility = () => {
   rend();
   }
 
- 
-
-
 function rend(){
   const template = (
   <div>
@@ -445,10 +733,6 @@ function rend(){
      
     <ol>
      {func}
-      
-      
-     
-     
       
     </ol>
     <button onClick={removeFunction}>Remove All</button>
@@ -466,71 +750,10 @@ const appRoot = document.getElementById('app');
 ReactDOM.render(template, appRoot);
 };
 
-
-
-
-
-
-
 rend();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+---------------------------------------------------------------------------------
 
 
 Exercise:
