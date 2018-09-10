@@ -43,6 +43,7 @@ class IndecisionApp extends React.Component {
      <div>
       <Header title={title} subtitle={subtitle} />
       <Action 
+      //Vraca vrednost true ili false
       handlePickOption={this.state.options.length>0}
       handleDeleteOption={this.handleDeleteOption}
       />
@@ -79,7 +80,7 @@ class Action extends React.Component {
    alert("HandlePicking")
   };
  render() {
-    console.log(this.props);
+    
    return (
      <div>
       <h2>
@@ -102,14 +103,12 @@ class Options extends React.Component {
   
   constructor(props){
     super(props);
-    this.handleRemoveAll = this.handleRemoveAll.bind(this);
+    
 
-    //this.func=this.func.bind(this);
+    
   };
   
-   handleRemoveAll(){
-   alert(this.props.arr);
-   }
+  
   
   
  render() {
@@ -124,10 +123,8 @@ class Options extends React.Component {
 
    return (
      <div>
-    <button onClick={this.handleRemoveAll}>
-      Remove all
-    </button>
-     
+    
+   
     <Option 
     arr={this.props.options} 
     duzina2={this.props.options.length} 
