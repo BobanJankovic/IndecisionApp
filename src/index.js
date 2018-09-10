@@ -26,27 +26,26 @@ class IndecisionApp extends React.Component {
 //sta ce da pokrece funkciju?
 
 
-  
-  handleAdd(e){
-   e.preventDefault();
-    let vrednost = e.target.elements.option.value; 
-    if(!vrednost) {
-       alert("1.slucaj nema nista")
-     } else if (this.state.options.indexOf(vrednost)>-1){
-       alert("2.slucaj ima u areju")
-     };
+  handleAdd(vrednost){
+    console.log(vrednost);
+    if (!vrednost || this.state.options.indexOf(vrednost)>-1){
+      return undefined
+      
+      
+    }
     
-   
-    if (vrednost && !(this.state.options.indexOf(vrednost)>-1) ) {
    //ili metod contact
    //https://stackoverflow.com/questions/26253351/correct-modification-of-state-arrays-in-reactjs
    this.setState(prevState => ({
   options: [...prevState.options, vrednost]
 }))
    
-    };
-    e.target.elements.option.value='';
-  };
+    
+    
+    
+  }
+  
+  
    
    handlePick(){
     let rand=Math.floor(Math.random()*this.state.options.length);
@@ -76,8 +75,9 @@ class IndecisionApp extends React.Component {
 
       <Options options={this.state.options}  length={this.state.options.length} />
       <AddOption 
-       handleAdd={this.handleAdd}/>
-      
+       handleAdd={this.handleAdd}
+      stejt={this.state.options}
+       />
     </div>
    );
  }
@@ -206,15 +206,29 @@ class Option extends React.Component {
 class AddOption extends React.Component {
   constructor(props){
     super(props);
-    this.state={
-      error: undefined
-      
-    }
+    this.handleAdd=this.handleAdd.bind(this);
     
+    this.state={
+      error:undefined
+    }   
+  }
+  handleAdd(e){
+   e.preventDefault();
+    let vrednost = e.target.elements.option.value; 
+    this.props.handleAdd(vrednost);
+     if(!vrednost || this.props.stejt.indexOf(vrednost)>-1) {
+        this.setState({error:this.props.handleAdd});
+     } 
+   
+
+    
+    e.target.elements.option.value='';
   };
+  
  
  render() {
-   
+   let check=Boolean(this.state.error);
+   console.log(check);
   
   
   
@@ -222,13 +236,14 @@ class AddOption extends React.Component {
    return (
 
     <div>
+    { check && <p>Ovo je error ne mozes ovo napisati</p>}
       <h2>
         Zdravo ja sam AddOption
       </h2>
-      {this.state.error && <p>Ovo je error ne mozes ovo napisati</p>}
+      
       <form
       
-      onSubmit={this.props.handleAdd}>
+      onSubmit={this.handleAdd}>
       <input type="text" name="option" ></input>
       <button
       
@@ -263,6 +278,27 @@ ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
 /*
 --------------------------------------------------
 
+
+handleAdd(e){
+   e.preventDefault();
+    let vrednost = e.target.elements.option.value; 
+    if(!vrednost) {
+       alert("1.slucaj nema nista")
+     } else if (this.state.options.indexOf(vrednost)>-1){
+       alert("2.slucaj ima u areju")
+     };
+    
+   
+    if (vrednost && !(this.state.options.indexOf(vrednost)>-1) ) {
+   //ili metod contact
+   //https://stackoverflow.com/questions/26253351/correct-modification-of-state-arrays-in-reactjs
+   this.setState(prevState => ({
+  options: [...prevState.options, vrednost]
+}))
+   
+    };
+    e.target.elements.option.value='';
+  };
 
 err(e){
     let vrednost = e.target.elements.option.value; 
