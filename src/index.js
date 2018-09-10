@@ -9,27 +9,36 @@ class IndecisionApp extends React.Component {
   constructor(props){
     super(props);
     this.state={
-      options: []
-      //options: ['thing one', 'thing two', 'thing three']
+      options: ['thing one', 'thing two', 'thing three']
+      //
     }
     this.handleAdd=this.handleAdd.bind(this);
     this.handleDeleteOption=this.handleDeleteOption.bind(this);
     this.handlePick=this.handlePick.bind(this);
     
+    
   }
 
+
+
+//treba mi funkcija koja vraca true ili false na osnovu sta je uneto u formu?
+//moze i da napravimo stejt koji je undefined i set state da menjamo samo
+//sta ce da pokrece funkciju?
+
+
+  
   handleAdd(e){
    e.preventDefault();
     let vrednost = e.target.elements.option.value; 
-
-    if (!vrednost) {
-    alert("napisi nesto")
-} else if (this.state.options.indexOf(vrednost)>-1) {
-    alert ("nalazi se u areju");
-} ;
-
+    if(!vrednost) {
+       alert("1.slucaj nema nista")
+     } else if (this.state.options.indexOf(vrednost)>-1){
+       alert("2.slucaj ima u areju")
+     };
+    
+   
     if (vrednost && !(this.state.options.indexOf(vrednost)>-1) ) {
-   //this.setState({options:this.state.options.push(vrednost)})
+   //ili metod contact
    //https://stackoverflow.com/questions/26253351/correct-modification-of-state-arrays-in-reactjs
    this.setState(prevState => ({
   options: [...prevState.options, vrednost]
@@ -61,11 +70,13 @@ class IndecisionApp extends React.Component {
       handlePickOption={this.state.options.length>0}
       handleDeleteOption={this.handleDeleteOption}
       handlePick={this.handlePick}
+      
       />
 
 
       <Options options={this.state.options}  length={this.state.options.length} />
-      <AddOption handleAdd={this.handleAdd}/>
+      <AddOption 
+       handleAdd={this.handleAdd}/>
       
     </div>
    );
@@ -89,8 +100,11 @@ class Header extends React.Component {
 class Action extends React.Component {
   constructor(props){
     super(props);
+    
+
   }
- 
+
+  
  
  render() {
     
@@ -99,7 +113,13 @@ class Action extends React.Component {
       <h2>
         Izaberite opciju randoomly
       </h2>
-      <button onClick={this.props.handlePick} type="button" disabled={!this.props.handlePickOption}>Pick Option</button>
+      <button 
+      
+      onClick={this.props.handlePick} 
+      type="button" 
+      disabled={!this.props.handlePickOption}
+      
+      >Pick Option</button>
       
       <button onClick={this.props.handleDeleteOption}>Delete All!</button>
       
@@ -184,19 +204,35 @@ class Option extends React.Component {
 
 
 class AddOption extends React.Component {
-  
+  constructor(props){
+    super(props);
+    this.state={
+      error: undefined
+      
+    }
+    
+  };
+ 
  render() {
    
   
+  
+  
 
    return (
+
     <div>
       <h2>
         Zdravo ja sam AddOption
       </h2>
-      <form onSubmit={this.props.handleAdd}>
+      {this.state.error && <p>Ovo je error ne mozes ovo napisati</p>}
+      <form
+      
+      onSubmit={this.props.handleAdd}>
       <input type="text" name="option" ></input>
-      <button >Add option</button>
+      <button
+      
+      >Add option</button>
       </form>
     </div>
    );
@@ -226,6 +262,20 @@ ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
 
 /*
 --------------------------------------------------
+
+
+err(e){
+    let vrednost = e.target.elements.option.value; 
+    if (!vrednost) {
+      alert("napisi nesto")
+    } else if (this.props.stejt.indexOf(vrednost)>-1) {
+        alert ("nalazi se u areju");
+      } 
+    };
+  
+
+
+
 The recommended approach in later React versions is to use an updater function 
 when modifying states to prevent race conditions:
 
