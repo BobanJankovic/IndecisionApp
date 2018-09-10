@@ -14,23 +14,37 @@ class IndecisionApp extends React.Component {
     }
     this.handleAdd=this.handleAdd.bind(this);
     this.handleDeleteOption=this.handleDeleteOption.bind(this);
+    this.handlePick=this.handlePick.bind(this);
     
   }
 
   handleAdd(e){
    e.preventDefault();
     let vrednost = e.target.elements.option.value; 
-    if (vrednost) {
+
+    if (!vrednost) {
+    alert("napisi nesto")
+} else if (this.state.options.indexOf(vrednost)>-1) {
+    alert ("nalazi se u areju");
+} ;
+
+    if (vrednost && !(this.state.options.indexOf(vrednost)>-1) ) {
    //this.setState({options:this.state.options.push(vrednost)})
    //https://stackoverflow.com/questions/26253351/correct-modification-of-state-arrays-in-reactjs
    this.setState(prevState => ({
   options: [...prevState.options, vrednost]
 }))
-   e.target.elements.option.value='';
+   
     };
+    e.target.elements.option.value='';
   };
    
-  
+   handlePick(){
+    let rand=Math.floor(Math.random()*this.state.options.length);
+   alert(this.state.options[rand]);
+  };
+
+
   handleDeleteOption(){
     this.setState({options:[]});
   };
@@ -46,6 +60,7 @@ class IndecisionApp extends React.Component {
       //Vraca vrednost true ili false
       handlePickOption={this.state.options.length>0}
       handleDeleteOption={this.handleDeleteOption}
+      handlePick={this.handlePick}
       />
 
 
@@ -76,9 +91,7 @@ class Action extends React.Component {
     super(props);
   }
  
-  handlePick(){
-   alert("HandlePicking")
-  };
+ 
  render() {
     
    return (
@@ -86,7 +99,7 @@ class Action extends React.Component {
       <h2>
         Izaberite opciju randoomly
       </h2>
-      <button onClick={this.handlePick} type="button" disabled={!this.props.handlePickOption}>Pick Option</button>
+      <button onClick={this.props.handlePick} type="button" disabled={!this.props.handlePickOption}>Pick Option</button>
       
       <button onClick={this.props.handleDeleteOption}>Delete All!</button>
       
