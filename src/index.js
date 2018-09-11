@@ -10,46 +10,39 @@ class IndecisionApp extends React.Component {
     super(props);
     this.state={
       options: ['thing one', 'thing two', 'thing three']
-      //
+      
     }
     this.handleAdd=this.handleAdd.bind(this);
     this.handleDeleteOption=this.handleDeleteOption.bind(this);
     this.handlePick=this.handlePick.bind(this);
-    
-    
   }
 
 
 
-//treba mi funkcija koja vraca true ili false na osnovu sta je uneto u formu?
-//moze i da napravimo stejt koji je undefined i set state da menjamo samo
-//sta ce da pokrece funkciju?
+  //treba mi funkcija koja vraca true ili false na osnovu sta je uneto u formu?
+  //moze i da napravimo stejt koji je undefined i set state da menjamo samo
+  //sta ce da pokrece funkciju?
 
-//ako je vrednost dobra vratice undefined jer nismo explicitno naglasili sta da vrati ako je true,
-//ako je false vratice jedno od ova 2 return-a
+  //ako je vrednost dobra vratice undefined jer nismo explicitno naglasili sta da vrati ako je true,
+  //ako je false vratice jedno od ova 2 return-a
+
   handleAdd(vrednost){
-    console.log(vrednost);
     if (!vrednost){
-       return "Error: There is no input"
+      return "Error: There is no input"
     } else if (this.state.options.indexOf(vrednost)>-1) {
       return "Error: This option already exists"
     } 
     //ili metod contact
-   //https://stackoverflow.com/questions/26253351/correct-modification-of-state-arrays-in-reactjs
-   this.setState(prevState => ({
-  options: [...prevState.options, vrednost]
-}))
-   
-    
-    
-    
+    //https://stackoverflow.com/questions/26253351/correct-modification-of-state-arrays-in-reactjs
+
+    this.setState(prevState => ({options: [...prevState.options, vrednost]}))
   }
   
   
    
-   handlePick(){
+  handlePick(){
     let rand=Math.floor(Math.random()*this.state.options.length);
-   alert(this.state.options[rand]);
+    alert(this.state.options[rand]);
   };
 
 
@@ -61,157 +54,130 @@ class IndecisionApp extends React.Component {
    const title = "Indecision" ;
    const subtitle = "Put your life in the hands of computer";
   
-   return (
-     <div>
-      <Header title={title} subtitle={subtitle} />
-      <Action 
-      //Vraca vrednost true ili false
-      handlePickOption={this.state.options.length>0}
-      handleDeleteOption={this.handleDeleteOption}
-      handlePick={this.handlePick}
-      
-      />
+    return (
+      <div>
+        <Header title={title} subtitle={subtitle} />
+        
+        <Action 
+          //Vraca vrednost true ili false
+          handlePickOption={this.state.options.length>0}
+          handleDeleteOption={this.handleDeleteOption}
+          handlePick={this.handlePick}
+        />
 
+        <Options 
+          options={this.state.options}  
+          length={this.state.options.length} 
+        />
 
-      <Options options={this.state.options}  length={this.state.options.length} />
-      <AddOption 
-       handleAdd={this.handleAdd}
-      stejt={this.state.options}
-       />
-    </div>
-   );
- }
+        <AddOption 
+          handleAdd={this.handleAdd}
+          stejt={this.state.options}
+        />
+
+      </div>
+    );
+  }
 }
 
 
 
 class Header extends React.Component {
- render() {
-   return (
-    <div>
-      <h1>{this.props.title}</h1>
-      <h3>{this.props.subtitle}</h3>
-    </div>
-   );
- }
-
-
+  render() {
+    return (
+      <div>
+        <h1>{this.props.title}</h1>
+        <h3>{this.props.subtitle}</h3>
+      </div>
+    );
+  }
 }
+
 class Action extends React.Component {
   constructor(props){
     super(props);
-    
-
   }
 
-  
- 
- render() {
+  render() {
     
-   return (
-     <div>
-      <h2>
-        Izaberite opciju randoomly
-      </h2>
-      <button 
-      
-      onClick={this.props.handlePick} 
-      type="button" 
-      disabled={!this.props.handlePickOption}
-      
-      >Pick Option</button>
-      
-      <button onClick={this.props.handleDeleteOption}>Delete All!</button>
-      
-    </div>  
-   );
- }
+    return (
+      <div>
+        <h2>
+          Izaberite opciju randoomly
+        </h2>
 
+        <button 
+          onClick={this.props.handlePick} 
+          type="button" 
+          disabled={!this.props.handlePickOption}
+          >Pick Option
+        </button>
+      
+        <button onClick={this.props.handleDeleteOption}>Delete All!</button>
+      </div>  
+    );
+  }
 
 }
 
 
 
 class Options extends React.Component {
-  
   constructor(props){
     super(props);
-    
-
-    
   };
   
-  
-  
-  
- render() {
-   
-   let index=0;
+  render() {
+    let index=0;
     //ovo je arej u varoijabli let func i zbog toga kada se daje optionsu 
     //ne mora bind i this da se kuca samo ovako kako sam uradio 
-   let func=this.props.options.map(element => {
-    //mozda najboje resenje za key
-    return <li key={index++}>{element}</li>
-   });
+    let func=this.props.options.map(element => {
+      //mozda najboje resenje za key
+      return <li key={index++}>{element}</li>
+    });
 
-   return (
-     <div>
-    
-   
-    <Option 
-    arr={this.props.options} 
-    duzina2={this.props.options.length} 
-    func1={func}/>
-    
-    </div>
-   );
- }
-
-
+    return (
+      <div>
+        <Option 
+          arr={this.props.options} 
+          duzina2={this.props.options.length} 
+          func1={func}
+        />
+      </div>
+    );
+  }
 }
 
 
 class Option extends React.Component {
- render() {
-   
-
+  render() {
   
-
-   return (
-    <div>
-      <h2>
-        Ovo je arej:
-        {this.props.arr}
-        
-      </h2>
-      <h4>
-        Ovo je duzina Areja> {this.props.duzina2}
-      </h4>
-      <p>Option :{this.props.func1}</p>
-    </div>
-
-   );
- }
-
-
+    return (
+      <div>
+        <h2>
+          Ovo je arej:
+          {this.props.arr}
+        </h2>
+        <h4>
+          Ovo je duzina Areja> {this.props.duzina2}
+        </h4>
+        <p>Option :{this.props.func1}</p>
+      </div>
+    );
+  }
 }
 
-//
-
-// 1. Setup the form with text input and submit button
-// 2. Wire up onSubmit
-// 3. handleAddOption -> fetch the value typed -> if value, then alert
 
 
 class AddOption extends React.Component {
   constructor(props){
     super(props);
     this.handleAdd=this.handleAdd.bind(this);
-    
     this.state={
       error:undefined
     }   
   }
+
   handleAdd(e){
     e.preventDefault();
     let vrednost = e.target.elements.option.value; 
@@ -220,29 +186,20 @@ class AddOption extends React.Component {
     e.target.elements.option.value='';
   };
    
- render() {
-  
-   return (
-
-    <div>
-    { this.state.error && <p>{this.state.error} -> Ovo je error ne mozes ovo napisati</p>}
-      <h2>
-        Zdravo ja sam AddOption
-      </h2>
-      
-      <form
-      
-      onSubmit={this.handleAdd}>
-      <input type="text" name="option" ></input>
-      <button
-      
-      >Add option</button>
-      </form>
-    </div>
-   );
- }
-
-
+  render() {
+    return (
+      <div>
+        { this.state.error && <p>{this.state.error} -> Ovo je error ne mozes ovo napisati</p>}
+        <h2>
+          Zdravo ja sam AddOption
+        </h2>
+        <form onSubmit={this.handleAdd}>
+          <input type="text" name="option" ></input>
+          <button>Add option</button>
+        </form>
+      </div>
+    );
+  }
 }
 
 
