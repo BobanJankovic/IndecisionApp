@@ -56,12 +56,14 @@ class IndecisionApp extends React.Component {
   };
 
  render() {
-   const title = "Indecision" ;
+   //ovo mi vise ne treba jer imam default i svkoj strani cu drugaciji title-default da stavljam
+   //const title = "Indecision" ;
    const subtitle = "Put your life in the hands of computer";
   
     return (
       <div>
-        <Header title={title} subtitle={subtitle} />
+        
+        <Header /*title={title}*/ subtitle={subtitle} />
         
         <Action 
           //Vraca vrednost true ili false
@@ -91,9 +93,15 @@ const Header = (props) => {
   return (
       <div>
         <h1>{props.title}</h1>
-        <h3>{props.subtitle}</h3>
+        { props.subtitle  && <h3>{props.subtitle}</h3>}
       </div>
     );
+};
+
+
+//Default props
+Header.defaultProps = {
+  title: "Indecision Bobko"
 };
 
 //STATELESS functional component
