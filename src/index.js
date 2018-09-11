@@ -25,16 +25,16 @@ class IndecisionApp extends React.Component {
 //moze i da napravimo stejt koji je undefined i set state da menjamo samo
 //sta ce da pokrece funkciju?
 
-
+//ako je vrednost dobra vratice undefined jer nismo explicitno naglasili sta da vrati ako je true,
+//ako je false vratice jedno od ova 2 return-a
   handleAdd(vrednost){
     console.log(vrednost);
-    if (!vrednost || this.state.options.indexOf(vrednost)>-1){
-      return undefined
-      
-      
-    }
-    
-   //ili metod contact
+    if (!vrednost){
+       return "Error: There is no input"
+    } else if (this.state.options.indexOf(vrednost)>-1) {
+      return "Error: This option already exists"
+    } 
+    //ili metod contact
    //https://stackoverflow.com/questions/26253351/correct-modification-of-state-arrays-in-reactjs
    this.setState(prevState => ({
   options: [...prevState.options, vrednost]
@@ -213,30 +213,19 @@ class AddOption extends React.Component {
     }   
   }
   handleAdd(e){
-   e.preventDefault();
+    e.preventDefault();
     let vrednost = e.target.elements.option.value; 
-    this.props.handleAdd(vrednost);
-     if(!vrednost || this.props.stejt.indexOf(vrednost)>-1) {
-        this.setState({error:this.props.handleAdd});
-     } 
-   
-
-    
+    let check = this.props.handleAdd(vrednost);
+    this.setState({error:check}); 
     e.target.elements.option.value='';
   };
-  
- 
+   
  render() {
-   let check=Boolean(this.state.error);
-   console.log(check);
   
-  
-  
-
    return (
 
     <div>
-    { check && <p>Ovo je error ne mozes ovo napisati</p>}
+    { this.state.error && <p>{this.state.error} -> Ovo je error ne mozes ovo napisati</p>}
       <h2>
         Zdravo ja sam AddOption
       </h2>
