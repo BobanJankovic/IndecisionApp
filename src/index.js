@@ -12,6 +12,11 @@ class IndecisionApp extends React.Component {
       options: ['thing one', 'thing two', 'thing three']
       
     }
+
+    //The parent component binds the newly-defined method to the current instance of the component 
+    //in its constructor.This ensures that when we pass the method to the child component, 
+    //it will still update the parent component
+
     this.handleAdd=this.handleAdd.bind(this);
     this.handleDeleteOption=this.handleDeleteOption.bind(this);
     this.handlePick=this.handlePick.bind(this);
@@ -81,104 +86,87 @@ class IndecisionApp extends React.Component {
 }
 
 
-
-class Header extends React.Component {
-  render() {
-    return (
+//STATELESS functional component
+const Header = (props) => {
+  return (
       <div>
-        <h1>{this.props.title}</h1>
-        <h3>{this.props.subtitle}</h3>
+        <h1>{props.title}</h1>
+        <h3>{props.subtitle}</h3>
       </div>
     );
-  }
-}
+};
 
-class Action extends React.Component {
-  constructor(props){
-    super(props);
-  }
+//STATELESS functional component
+const Action = (props) => {
+  return (
+    <div>
+      <h2>
+        Izaberite opciju randoomly
+      </h2>
 
-  render() {
+      <button 
+        onClick={props.handlePick} 
+        type="button" 
+        disabled={!props.handlePickOption}
+        >Pick Option
+      </button>
     
-    return (
-      <div>
-        <h2>
-          Izaberite opciju randoomly
-        </h2>
+      <button onClick={props.handleDeleteOption}>Delete All!</button>
+    </div>  
+  );
+};
 
-        <button 
-          onClick={this.props.handlePick} 
-          type="button" 
-          disabled={!this.props.handlePickOption}
-          >Pick Option
-        </button>
-      
-        <button onClick={this.props.handleDeleteOption}>Delete All!</button>
-      </div>  
-    );
-  }
+//STATELESS functional component
+const Options = (props) => {
+  let index=0;
+  //ovo je arej u varoijabli let func i zbog toga kada se daje optionsu 
+  //ne mora bind i this da se kuca samo ovako kako sam uradio 
+  let func=props.options.map(element => {
+    //mozda najboje resenje za key
+    return <li key={index++}>{element}</li>
+  });
 
-}
+  return (
+    <div>
+      <Option 
+        arr={props.options} 
+        duzina2={props.options.length} 
+        func1={func}
+      />
+    </div>
+  );
+};
 
-
-
-class Options extends React.Component {
-  constructor(props){
-    super(props);
-  };
-  
-  render() {
-    let index=0;
-    //ovo je arej u varoijabli let func i zbog toga kada se daje optionsu 
-    //ne mora bind i this da se kuca samo ovako kako sam uradio 
-    let func=this.props.options.map(element => {
-      //mozda najboje resenje za key
-      return <li key={index++}>{element}</li>
-    });
-
-    return (
-      <div>
-        <Option 
-          arr={this.props.options} 
-          duzina2={this.props.options.length} 
-          func1={func}
-        />
-      </div>
-    );
-  }
-}
-
-
-class Option extends React.Component {
-  render() {
-  
-    return (
-      <div>
-        <h2>
-          Ovo je arej:
-          {this.props.arr}
-        </h2>
-        <h4>
-          Ovo je duzina Areja> {this.props.duzina2}
-        </h4>
-        <p>Option :{this.props.func1}</p>
-      </div>
-    );
-  }
-}
+//STATELESS functional component
+const Option = (props) => {
+  return (
+    <div>
+      <h2>
+        Ovo je arej:
+        {props.arr}
+      </h2>
+      <h4>
+        Ovo je duzina Areja> {props.duzina2}
+      </h4>
+      <p>Option :{props.func1}</p>
+    </div>
+  );
+};
 
 
 
 class AddOption extends React.Component {
   constructor(props){
     super(props);
-    this.handleAdd=this.handleAdd.bind(this);
+    this.handleAddd=this.handleAddd.bind(this);
     this.state={
       error:undefined
     }   
   }
-
-  handleAdd(e){
+    //The parent component binds the newly-defined method to the current instance of the component 
+    //in its constructor.This ensures that when we pass the method to the child component, 
+    //it will still update the parent component
+  handleAddd(e){
     e.preventDefault();
     let vrednost = e.target.elements.option.value; 
     let check = this.props.handleAdd(vrednost);
@@ -193,7 +181,7 @@ class AddOption extends React.Component {
         <h2>
           Zdravo ja sam AddOption
         </h2>
-        <form onSubmit={this.handleAdd}>
+        <form onSubmit={this.handleAddd}>
           <input type="text" name="option" ></input>
           <button>Add option</button>
         </form>
@@ -203,6 +191,14 @@ class AddOption extends React.Component {
 }
 
 
+
+//const Example= (props) => {
+//  return (
+//<div>
+//<p>Zdravo ja sam {props.name}</p>
+//</div>
+//  );
+//}
 
 ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
 
@@ -222,9 +218,21 @@ ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
 
 
 /*
---------------------------------------------------
+---------------------------------------------------
+
+Kada pisemo funkciju konstruktor, a kada nije potrebna?
+
+const Header = (props) => {
+  return (
+      <div>
+        <h1>{this.props.title}</h1>
+        <h3>{this.props.subtitle}</h3>
+      </div>
+    );
+};
 
 
+-----------------------------------------
 handleAdd(e){
    e.preventDefault();
     let vrednost = e.target.elements.option.value; 
