@@ -10,9 +10,7 @@ class IndecisionApp extends React.Component {
     super(props);
     this.state={
       options: ['thing one', 'thing two', 'thing three']
-      
     }
-
     //The parent component binds the newly-defined method to the current instance of the component 
     //in its constructor.This ensures that when we pass the method to the child component, 
     //it will still update the parent component
@@ -20,6 +18,7 @@ class IndecisionApp extends React.Component {
     this.handleAdd=this.handleAdd.bind(this);
     this.handleDeleteOption=this.handleDeleteOption.bind(this);
     this.handlePick=this.handlePick.bind(this);
+    this.handleDeleteOneOption=this.handleDeleteOneOption.bind(this);
   }
 
 
@@ -55,6 +54,10 @@ class IndecisionApp extends React.Component {
     this.setState({options:[]});
   };
 
+  handleDeleteOneOption(){
+    console.log("hdo")
+  };
+
  render() {
    //ovo mi vise ne treba jer imam default i svkoj strani cu drugaciji title-default da stavljam
    //const title = "Indecision" ;
@@ -70,11 +73,13 @@ class IndecisionApp extends React.Component {
           handlePickOption={this.state.options.length>0}
           handleDeleteOption={this.handleDeleteOption}
           handlePick={this.handlePick}
+          
         />
 
         <Options 
           options={this.state.options}  
           length={this.state.options.length} 
+          handleDeleteOneOption={this.handleDeleteOneOption}
         />
 
         <AddOption 
@@ -120,6 +125,7 @@ const Action = (props) => {
       </button>
     
       <button onClick={props.handleDeleteOption}>Delete All!</button>
+      
     </div>  
   );
 };
@@ -129,18 +135,20 @@ const Options = (props) => {
   let index=0;
   //ovo je arej u varoijabli let func i zbog toga kada se daje optionsu 
   //ne mora bind i this da se kuca samo ovako kako sam uradio 
-  let func=props.options.map(element => {
-    //mozda najboje resenje za key
-    return <li key={index++}>{element}</li>
-  });
-
+  
   return (
     <div>
-      <Option 
-        arr={props.options} 
-        duzina2={props.options.length} 
-        func1={func}
-      />
+     {  props.options.map(element => {
+        //mozda najboje resenje za key
+        return <Option
+                key={index++}
+                optionText={element}
+                arr={props.options} 
+                duzina2={props.options.length} 
+                handleDeleteOneOption={props.handleDeleteOneOption} 
+              />     
+  })
+  }
     </div>
   );
 };
@@ -156,7 +164,9 @@ const Option = (props) => {
       <h4>
         Ovo je duzina Areja> {props.duzina2}
       </h4>
+      {props.optionText}
       <p>Option :{props.func1}</p>
+      <button onClick={props.handleDeleteOneOption}>delete one element</button>
     </div>
   );
 };
