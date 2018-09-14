@@ -133,13 +133,10 @@ const Action = (props) => {
 //STATELESS functional component
 const Options = (props) => {
   let index=0;
-  //ovo je arej u varoijabli let func i zbog toga kada se daje optionsu 
-  //ne mora bind i this da se kuca samo ovako kako sam uradio 
-  
+ 
   return (
     <div>
      {  props.options.map(element => {
-        //mozda najboje resenje za key
         return <Option
                 key={index++}
                 optionText={element}
@@ -157,15 +154,8 @@ const Options = (props) => {
 const Option = (props) => {
   return (
     <div>
-      <h2>
-        Ovo je arej:
-        {props.arr}
-      </h2>
-      <h4>
-        Ovo je duzina Areja> {props.duzina2}
-      </h4>
-      {props.optionText}
-      <p>Option :{props.func1}</p>
+    <span>{props.optionText}</span>
+      
       <button onClick={props.handleDeleteOneOption}>delete one element</button>
     </div>
   );
