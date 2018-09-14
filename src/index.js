@@ -54,8 +54,15 @@ class IndecisionApp extends React.Component {
     this.setState({options:[]});
   };
 
-  handleDeleteOneOption(){
-    console.log("hdo")
+  handleDeleteOneOption(element){
+
+    this.setState((prevState)=> {
+     return {
+       //vraca arej svih onih reci koje se razlikuju od reci koje sam selektovao
+       options:prevState.options.filter(word => word !== element)
+     }
+   })
+    
   };
 
  render() {
@@ -156,7 +163,9 @@ const Option = (props) => {
     <div>
     <span>{props.optionText}</span>
       
-      <button onClick={props.handleDeleteOneOption}>delete one element</button>
+      <button 
+      onClick={(e)=>{props.handleDeleteOneOption(props.optionText)} }
+      >delete one element</button>
     </div>
   );
 };
