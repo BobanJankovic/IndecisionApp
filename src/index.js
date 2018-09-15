@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Action} from './action';
 import './index.css';
 
 
@@ -22,9 +23,15 @@ class IndecisionApp extends React.Component {
   }
 
   componentDidMount(){
-    const options = localStorage.getItem('options');
-    const json=JSON.parse(options)
-    this.setState({options:json});
+    try {
+      const options = localStorage.getItem('options');
+      const json=JSON.parse(options)
+      if (json){
+        this.setState({options:json});
+      }
+    } catch(e){
+      console.log('Error cought')
+    }
   };
 
   componentDidUpdate(prevProps, prevState){
@@ -135,25 +142,7 @@ Header.defaultProps = {
 };
 
 //STATELESS functional component
-const Action = (props) => {
-  return (
-    <div>
-      <h2>
-        Izaberite opciju randoomly
-      </h2>
 
-      <button 
-        onClick={props.handlePick} 
-        type="button" 
-        disabled={!props.handlePickOption}
-        >Pick Option
-      </button>
-    
-      <button onClick={props.handleDeleteOption}>Delete All!</button>
-      
-    </div>  
-  );
-};
 
 //STATELESS functional component
 const Options = (props) => {
@@ -161,6 +150,7 @@ const Options = (props) => {
  
   return (
     <div>
+    {props.options.length===0 && <p>Please add an option</p>}
      {  props.options.map(element => {
         return <Option
                 key={index++}
@@ -204,8 +194,11 @@ class AddOption extends React.Component {
     e.preventDefault();
     let vrednost = e.target.elements.option.value; 
     let check = this.props.handleAdd(vrednost);
-    this.setState({error:check}); 
-    e.target.elements.option.value='';
+    this.setState({error:check});
+    if (!check) {
+      e.target.elements.option.value='';
+    } 
+    
   };
    
   render() {
@@ -251,7 +244,113 @@ ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
 
 
 
+
+
+
+
+
+
+
+
+
 /*
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+
+
+class Counter extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state={
+      count:0
+    }
+    this.handleMinus=this.handleMinus.bind(this);
+    this.handleAdd=this.handleAdd.bind(this);
+    this.handleRemove=this.handleRemove.bind(this);
+  }
+
+
+  componentDidMount(){
+    try {
+      const countNumber = localStorage.getItem('number');
+      const json=JSON.parse(countNumber)
+      if (json){
+        this.setState({count:json});
+      }
+    } catch(e){
+      console.log('Error cought')
+    }
+  };
+
+  componentDidUpdate(prevProps, prevState){
+    if (prevState.count !== this.state.count){
+      const json=JSON.stringify(this.state.count)
+      localStorage.setItem('number', json)
+      //console.log(json)
+    };
+  };
+
+  componentWillUnmount(){
+    console.log("unmount")
+  };
+
+
+
+
+  handleMinus(){
+    
+   this.setState({count:this.state.count-1});
+  };
+  handleAdd(){
+   
+   this.setState((prevState)=> {
+     return {
+       count:prevState.count+1
+     }
+   })
+  };
+  handleRemove(){
+   
+   this.setState({count:0});
+  };
+ render() {
+   return (
+     <div>
+      <h2>
+        Counter: {this.state.count}
+      </h2>
+      <button onClick={this.handleAdd}>+1</button>
+      <button onClick={this.handleMinus}>-1</button>
+      <button onClick={this.handleRemove}>Remove All</button>
+    </div>  
+   );
+ }
+
+
+}
+
+
+
+const appRoot = document.getElementById('app');
+
+ReactDOM.render(<Counter />, appRoot);
+
+
+
+
 ---------------------------------------------------
 
 Kada pisemo funkciju konstruktor, a kada nije potrebna?
@@ -320,58 +419,6 @@ const onFormSubmit = (e) => {
       
     }
   }  
-
-
-  -----------------------------------------------
-class Counter extends React.Component {
-  constructor(props){
-    super(props);
-
-    this.state={
-      count:0
-    }
-    this.handleMinus=this.handleMinus.bind(this);
-    this.handleAdd=this.handleAdd.bind(this);
-    this.handleRemove=this.handleRemove.bind(this);
-  }
-  handleMinus(){
-    
-   this.setState({count:this.state.count-1});
-  };
-  handleAdd(){
-   
-   this.setState((prevState)=> {
-     return {
-       count:prevState.count+2
-     }
-   })
-  };
-  handleRemove(){
-   
-   this.setState({count:0});
-  };
- render() {
-   return (
-     <div>
-      <h2>
-        Counter: {this.state.count}
-      </h2>
-      <button onClick={this.handleAdd}>+1</button>
-      <button onClick={this.handleMinus}>-1</button>
-      <button onClick={this.handleRemove}>Remove All</button>
-    </div>  
-   );
- }
-
-
-}
-
-
-
-const appRoot = document.getElementById('app');
-
-ReactDOM.render(<Counter />, appRoot);
-
 
 
 -------------------------------------------------------------------
