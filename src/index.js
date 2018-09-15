@@ -21,6 +21,24 @@ class IndecisionApp extends React.Component {
     this.handleDeleteOneOption=this.handleDeleteOneOption.bind(this);
   }
 
+  componentDidMount(){
+    const options = localStorage.getItem('options');
+    const json=JSON.parse(options)
+    this.setState({options:json});
+  };
+
+  componentDidUpdate(prevProps, prevState){
+    if (prevState.options.length !== this.state.options.length){
+      const json=JSON.stringify(this.state.options)
+      localStorage.setItem('options', json)
+    };
+  };
+
+  componentWillUnmount(){
+    console.log("unmount")
+  };
+
+
 
 
   //treba mi funkcija koja vraca true ili false na osnovu sta je uneto u formu?
@@ -162,10 +180,9 @@ const Option = (props) => {
   return (
     <div>
     <span>{props.optionText}</span>
-      
-      <button 
-      onClick={(e)=>{props.handleDeleteOneOption(props.optionText)} }
-      >delete one element</button>
+      <button onClick={(e)=>{props.handleDeleteOneOption(props.optionText)} }>
+        delete one element
+      </button>
     </div>
   );
 };
@@ -218,8 +235,8 @@ class AddOption extends React.Component {
 //}
 
 ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
-
-
+//Example of unmounting component with lifecycle method componentWillUnmount  
+//ReactDOM.render(React.createElement('p'), document.getElementById('app'));
 
 
 
